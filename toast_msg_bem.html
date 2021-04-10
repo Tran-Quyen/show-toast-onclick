@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BEM</title>
+    <link rel="stylesheet" href="./assets/css/btn_bem/styles.css" />
+    <link rel="stylesheet" href="./assets/css/toast_msg_bem/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- Success -->
+    <div id="toast"></div>
+    <div>
+      <button onclick="showSuccessToast()" class="btn btn--success">Show success toast</button>
+      <button onclick="showWarningToast()" class="btn btn--warn">Show warning toast</button>
+      <button onclick="showErrorToast()" class="btn btn--danger">Show error toast</button>
+    </div>
+
+    <script>
+      // Toast function
+      function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+        // Lấy info thẻ div có id = toast
+        const main = document.getElementById("toast");
+        if (main) {
+          // Tạo thẻ div
+          const toast = document.createElement("div");
+
+          //Auto Remove con sau khi hết duration
+          const autoRemoveId = setTimeout(() => {
+            main.removeChild(toast);
+          }, duration + 1000);
+
+          // Remove toast when clicked target icon
+          toast.onclick = function (e) {
+            // Nếu event target đúng vào class ".toast__close" thì remove
+            if (e.target.closest(".toast__close")) {
+              main.removeChild(toast);
+              // Bỏ tự remove
+              clearTimeout(autoRemoveId);
+            }
+          };
+
+          // Thêm class
+          toast.classList.add("toast", `toast--${type}`);
+
+          // Tính độ delay toFixed(2) làm tròn 2 số thập phân
+          const delay = (duration / 1000).toFixed(2);
+          toast.style.animation = `slideInLeft ease 0.3s, fadeOut linear 1s ${delay}s forwards`;
+
+          // List icon
+          const icons = {
+            success: "fas fa-check-circle",
+            info: "fas fa-info-circle",
+            warning: "fas fa-exclamation-circle",
+            error: "fas fa-exclamation-circle",
+          };
+          // kiểu icon phù hợp với mỗi type
+          const icon = icons[type];
+
+          // Thêm đoạn html với tham số
+          toast.innerHTML = `
+                <div class="toast__icon">
+                  <i class="${icon}"></i>
+                </div>
+                <div class="toast__body">
+                  <h3 class="toast__title">${title}</h3>
+                  <p class="toast__msg">
+                   ${message}
+                  </p>
+                </div>
+                <div class="toast__close">
+                  <i class="fas fa-times"></i>
+                </div>
+          `;
+          // Thêm con vào div có id = toast
+          main.appendChild(toast);
+        }
+      }
+
+      // toast({
+      //   title: "Success",
+      //   message: "Anyone with access can view your invited visitors.",
+      //   type: "info",
+      //   duration: 3000,
+      // });
+
+      function showSuccessToast() {
+        toast({
+          title: "Success",
+          message: "Anyone with access can view your invited visitors.",
+          type: "success",
+          duration: 5000,
+        });
+      }
+
+      function showWarningToast() {
+        toast({
+          title: "Warning",
+          message: "Anyone with access can view your invited visitors.",
+          type: "warning",
+          duration: 5000,
+        });
+      }
+
+      function showErrorToast() {
+        toast({
+          title: "Error",
+          message: "Anyone with access can view your invited visitors.",
+          type: "error",
+          duration: 5000,
+        });
+      }
+    </script>
+  </body>
+</html>

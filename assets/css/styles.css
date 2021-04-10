@@ -1,0 +1,15 @@
+/* BEM */
+.card {
+}
+.card .card--success {
+  /* Màu Xanh */
+}
+.card .card--error {
+  /* Màu Đỏ */
+}
+.card__heading {
+}
+.card__desc {
+}
+.card__btn {
+}
